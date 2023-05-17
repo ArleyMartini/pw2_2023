@@ -1,48 +1,48 @@
+<?php
+    // Inicia a sessão
+    session_start();
+    
+    if(isset($_POST["usuario"])){
+        $_SESSION["usuario"] = $_POST["usuario"];
+        header("Location: ../index.php");
+    }
+
+?>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link href="../css/form_login.css" rel="stylesheet">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Login</title>
+    <!-- Área para os Scripts CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Título da Página -->
 </head>
 <body>
-    <!-- Conteúdo do Body -->
-
-    <div class="login-wrap">
-	<div class="login-html">
-		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-		<input id="tab-2" type="radio" name="tab" class="for-pwd"><label for="tab-2" class="tab">Forgot Password</label>
-		<div class="login-form">
-			<div class="sign-in-htm">
-				<div class="group">
-					<label for="user" class="label">Username or Email</label>
-					<input id="user" type="text" class="input">
-				</div>
-				<div class="group">
-					<label for="pass" class="label">Password</label>
-					<input id="pass" type="password" class="input" data-type="password">
-				</div>
-				<div class="group">
-					<input type="submit" class="button" value="Sign In">
-				</div>
-				<div class="hr"></div>
-			</div>
-			<div class="for-pwd-htm">
-				<div class="group">
-					<label for="user" class="label">Username or Email</label>
-					<input id="user" type="text" class="input">
-				</div>
-				<div class="group">
-					<input type="submit" class="button" value="Reset Password">
-				</div>
-				<div class="hr"></div>
+	<div class="container">
+		<div class="row justify-content-center mt-5">
+			<div class="col-md-4">
+				<form method="POST">
+					<div class="mb-3">
+						<label for="usuario" class="form-label">Usuário</label>
+						<input type="text" class="form-control" id="usuario" name="usuario" placeholder="Digite seu usuário">
+					</div>
+					<div class="mb-3">
+						<label for="senha" class="form-label">Senha</label>
+						<input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha">
+					</div>
+					<button type="submit" class="btn btn-primary">Login</button>
+				</form>
 			</div>
 		</div>
 	</div>
-</div>
-
-    <!-- Área para os Scripts Java Scripts -->
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/scripts.js"></script>
+	
+	<!-- Área para os Scripts Java Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
 </body>
 </html>
