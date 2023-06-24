@@ -57,12 +57,12 @@ class MarcaController
             $conexao = Conexao::getInstance();
 
             // Excluir os produtos relacionados -> Faz o efeito cascata para não dar erro de chave estrangeira
-            $stmtProdutos = $conexao->prepare("DELETE FROM produto WHERE id_marca = :id");
+            $stmtProdutos = $conexao->prepare("DELETE FROM produto WHERE id_Marca = :id");
             $stmtProdutos->bindParam(":id", $id);
             $stmtProdutos->execute();
 
-            // Excluir a marca
-            $stmtMarca = $conexao->prepare("DELETE FROM marca WHERE id = :id");
+            // Excluir a Marca
+            $stmtMarca = $conexao->prepare("DELETE FROM Marca WHERE id = :id");
             $stmtMarca->bindParam(":id", $id);
             $stmtMarca->execute();
 
@@ -70,11 +70,11 @@ class MarcaController
                 $_SESSION['mensagem'] = 'Marca excluída com sucesso!';
                 return true;
             } else {
-                $_SESSION['mensagem'] = 'A marca não foi encontrada.';
+                $_SESSION['mensagem'] = 'A Marca não foi encontrada.';
                 return false;
             }
         } catch (PDOException $e) {
-            $_SESSION['mensagem'] = 'Erro ao excluir a marca: ' . $e->getMessage();
+            $_SESSION['mensagem'] = 'Erro ao excluir a Marca: ' . $e->getMessage();
             return false;
         }
     }

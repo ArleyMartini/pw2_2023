@@ -75,20 +75,20 @@ class ProdutoController
         try {
             $conexao = Conexao::getInstance();
 
-            // Excluir os produtos relacionados -> Faz o efeito cascata para não dar erro de chave estrangeira
-            $stmtProduto = $conexao->prepare("DELETE FROM produto WHERE id_categoria = :id");
+            // Excluir o Produto
+            $stmtProduto = $conexao->prepare("DELETE FROM produto WHERE id = :id");
             $stmtProduto->bindParam(":id", $id);
             $stmtProduto->execute();
 
             if ($stmtProduto->rowCount() > 0) {
-                $_SESSION['mensagem'] = 'Produto excluído com sucesso!';
+                $_SESSION['mensagem'] = 'Produto excluída com sucesso!';
                 return true;
             } else {
                 $_SESSION['mensagem'] = 'O produto não foi encontrada.';
                 return false;
             }
         } catch (PDOException $e) {
-            $_SESSION['mensagem'] = 'Erro ao excluir o produtoss: ' . $e->getMessage();
+            $_SESSION['mensagem'] = 'Erro ao excluir o produto: ' . $e->getMessage();
             return false;
         }
     }

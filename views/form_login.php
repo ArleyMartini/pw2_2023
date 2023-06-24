@@ -1,12 +1,18 @@
 <?php
+	require_once "../controllers/UsuarioController.php";
+
+
     // Inicia a sessão
     session_start();
-    
-    if(isset($_POST["usuario"])){
-        $_SESSION["usuario"] = $_POST["usuario"];
-        header("Location: ../index.php");
-    }
-
+    if(isset($_POST["usuario"]) && isset($_POST["senha"])) {
+		$usuarioController = new UsuarioController();
+		$usuarioController->login($_POST["usuario"], $_POST["senha"]);
+	}
+	if (isset($_SESSION['mensagem'])) {
+		echo "<script>alert('" . $_SESSION['mensagem'] . "')</script>";
+		unset($_SESSION['mensagem']); // Limpar a variável de sessão após exibir o alerta
+	}
+	
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +41,7 @@
 						<input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha">
 					</div>
 					<button type="submit" class="btn btn-primary">Login</button>
+					<a href="form_usuario.php" class="btn btn-success" role="button">Cadastrar</a>
 				</form>
 			</div>
 		</div>
