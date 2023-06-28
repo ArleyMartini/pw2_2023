@@ -3,16 +3,6 @@ include_once("restrict.php");
 require_once "controllers/VendaController.php";
 
 $controller = new VendaController();
-
-// Verificar se o parâmetro "id" está presente na URL
-if (isset($_GET['id'])) {
-    $idVenda = $_GET['id'];
-    $controller->delete($idVenda); // Chamar o método de exclusão da venda no controlador
-    $_SESSION['mensagem'] = "Venda excluída com sucesso."; // Definir mensagem de sucesso
-    header("Location: index.php"); // Redirecionar para a página principal após a exclusão
-    exit;
-}
-
 $vendas = $controller->findAll();
 
 // Verificar se existe uma mensagem definida na sessão

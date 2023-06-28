@@ -23,6 +23,7 @@ class Venda
         return $this;
     }
 
+
     /**
      * Get the value of id
      */
