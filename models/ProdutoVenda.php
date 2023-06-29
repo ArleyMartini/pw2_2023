@@ -94,7 +94,7 @@ class ProdutoVenda
     /**
      * Get the value of valor_unitario
      */
-    public function getValorUnitario()
+    public function getValor_unitario()
     {
         return $this->valor_unitario;
     }
@@ -104,7 +104,7 @@ class ProdutoVenda
      *
      * @return  self
      */
-    public function setValorUnitario($valor_unitario)
+    public function setValor_unitario($valor_unitario)
     {
         $this->valor_unitario = $valor_unitario;
 

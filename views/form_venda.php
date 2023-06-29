@@ -3,6 +3,7 @@ include_once("restrict.php");
 require_once "controllers/VendaController.php";
 require_once "controllers/ProdutoController.php";
 require_once "controllers/ProdutoVendaController.php";
+require_once "controllers/ProdutoCompraController.php";
 require_once "models/ProdutoVenda.php";
 require_once "models/Produto.php";
 
@@ -28,6 +29,7 @@ if (isset($_GET['id'])) {
 
 
 $produtoVendaController = new ProdutoVendaController();
+$produtoCompraController = new ProdutoCompraController();
 
 if (isset($_POST['adicionarProduto'])) {
 	$produtoController = new ProdutoController();
@@ -38,20 +40,17 @@ if (isset($_POST['adicionarProduto'])) {
 	$produto = $produtoController->findById($_POST['produto']);
 	$venda = $vendaController->findById($_SESSION["venda_id"]);
 	$quantidade = $_POST['qtde'];
-	$valorUnitario = $_POST['valor_unitario'];
-	$valorTotal = $_POST['valor_total'];
+	$valorUnitario = $produtoCompraController->buscaMediaByIdProduto($_POST['produto']);
+	$valorUnitario = $valorUnitario * (($produto->getPercentualLucro()/100)+1);
+	$valorTotal = ($valorUnitario * $quantidade);
 
 	// Criar uma nova instância de ProdutoVenda
-	$produtoVenda = new ProdutoVenda(null, $valorUnitario, $valorTotal, $quantidade, $produto, $venda, $usuario);
-
+	$produtoVenda = new ProdutoVenda(null, $quantidade, $produto, $venda, $valorUnitario, $valorTotal, $usuario);
 	$produtoVendaController->save($produtoVenda);
 }
 
 $produtosVenda = $produtoVendaController->findAll($_SESSION["venda_id"]);
-
 ?>
-
-
 
 <div class="container mt-2">
 	<h1 class="text-center mb-0">Cadastro de Venda</h1>
@@ -76,14 +75,9 @@ $produtosVenda = $produtoVendaController->findAll($_SESSION["venda_id"]);
 				<input type="text" class="form-control" id="qtde" name="qtde" required>
 			</div>
 
-			<div class="form-group col-md-3">
-				<label for="preco_custo">Preço de Custo</label>
-				<input type="text" class="form-control" id="preco_custo" name="preco_custo" required>
-			</div>
-			<div class="form-group col-md-3 align-self-end">
+			<div class="form-group col-md-2 align-self-end">
 				<input type="submit" class="btn btn-primary" id="salvar" name="adicionarProduto" value="Adicionar Produto">
 			</div>
-
 		</div>
 	</form>
 	<form method="POST">
@@ -103,17 +97,19 @@ $produtosVenda = $produtoVendaController->findAll($_SESSION["venda_id"]);
 						<th>#</th>
 						<th>Produto</th>
 						<th>Qtde</th>
-						<th>Preço de Custo</th>
+						<th>Valor Unitário</th>
+						<th>Valor Total</th>
 						<th>Ações</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach ($produtosVenda as $key => $produtoVenda) : ?>
 						<tr>
-							<td><?php echo htmlspecialchars($produtoVenda->getProduto()->getNome()); ?></td>
+							<td><?php echo htmlspecialchars($produtoVenda->getProduto()->getId()); ?></td>
 							<td><?php echo htmlspecialchars($produtoVenda->getProduto()->getNome()); ?></td>
 							<td><?php echo number_format($produtoVenda->getQtde(), 2, ',', '.'); ?></td>
-							<td><?php echo "R\$ " . number_format($produtoVenda->getPrecoCusto(), 2, ',', '.'); ?></td>
+							<td><?php echo "R\$ " . number_format($produtoVenda->getValor_unitario(), 2, ',', '.'); ?></td>
+							<td><?php echo "R\$ " . number_format($produtoVenda->getValorTotal(), 2, ',', '.'); ?></td>
 							<td>
 								<a class="" href="?pg=delete_produto_venda&id=<?php echo $produtoVenda->getId(); ?>" onclick="return confirm('Tem certeza que deseja excluir este produto?')">
 									<i class="fas fa-trash-alt"></i></a>

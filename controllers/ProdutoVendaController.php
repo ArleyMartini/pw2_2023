@@ -21,13 +21,12 @@ class ProdutoVendaController
         $produtoController = new ProdutoController();
         $usuarioController = new UsuarioController();
         $vendaController = new VendaController();
-        $usuario =
-            $usuarioController->findById($_SESSION["id_usuario"]);
+        $usuario = $usuarioController->findById($_SESSION["id_usuario"]);
 
         while ($produtoVenda = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $produto = $produtoController->findById($produtoVenda["id_produto"]);
             $venda = $vendaController->findById($produtoVenda["id_venda"]);
-            $produtoVenda = new ProdutoVenda($produtoVenda["id"], $produtoVenda["valor_unitario"], $produtoVenda["qtde"], $produto, $venda, $usuario);
+            $produtoVenda = new ProdutoVenda($produtoVenda["id"], $produtoVenda["qtde"], $produto, $venda, $produtoVenda["valor_unitario"], $produtoVenda["valor_total"], $usuario);
             $produtoVendas[] = $produtoVenda;
         }
 
@@ -38,18 +37,20 @@ class ProdutoVendaController
         // Insere uma produtoVenda
         $conexao = Conexao::getInstance();
 
-        $stmt = $conexao->prepare("INSERT INTO produto_venda (id_usuario, id_produto, id_venda, qtde, valor_unitario) VALUES (:id_usuario, :id_produto, :id_venda, :qtde, :valor_unitario)");
-        $id_usuario = $_SESSION["id_usuario"];
-        $id_produto =
-            $produtoVenda->getProduto()->getId();
-        $id_venda = $produtoVenda->getVenda()->getId();
+        $stmt = $conexao->prepare("INSERT INTO produto_venda (id_usuario, id_produto, id_venda, qtde, valor_unitario, valor_total) VALUES (:id_usuario, :id_produto, :id_venda, :qtde, :valor_unitario, :valor_total)");
         $qtde = $produtoVenda->getQtde();
+        $id_produto = $produtoVenda->getProduto()->getId();
+        $id_venda = $produtoVenda->getVenda()->getId();
         $valor_unitario = $produtoVenda->getValor_unitario();
-        $stmt->bindParam(":id_usuario", $id_usuario);
+        $valor_total = $produtoVenda->getValorTotal();
+        $id_usuario = $_SESSION["id_usuario"];
+        
+        $stmt->bindParam(":qtde", $qtde);
         $stmt->bindParam(":id_produto", $id_produto);
         $stmt->bindParam(":id_venda", $id_venda);
-        $stmt->bindParam(":qtde", $qtde);
         $stmt->bindParam(":valor_unitario", $valor_unitario);
+        $stmt->bindParam(":valor_total", $valor_total);
+        $stmt->bindParam(":id_usuario", $id_usuario);
 
         $stmt->execute();
 
@@ -121,7 +122,7 @@ class ProdutoVendaController
             $produto = $produtoController->findById($resultado["id_produto"]);
             $venda = $vendaController->findById($resultado["id_venda"]);
 
-            $produtoVenda = new ProdutoVenda($resultado["id"], $resultado["valor_unitario"], $resultado["qtde"], $produto, $venda, $usuario);
+            $produtoVenda = new ProdutoVenda($resultado["id"], $resultado["qtde"], $produto, $venda, $resultado["valor_unitario"], $resultado["valor_total"], $usuario);
 
 
             return $produtoVenda;

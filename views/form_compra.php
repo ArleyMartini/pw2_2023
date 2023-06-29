@@ -79,10 +79,10 @@ $produtosCompra = $produtoCompraController->findAll($_SESSION["compra_id"]);
 				<label for="preco_custo">Preço de Custo</label>
 				<input type="text" class="form-control" id="preco_custo" name="preco_custo" required>
 			</div>
+			
 			<div class="form-group col-md-3 align-self-end">
 				<input type="submit" class="btn btn-primary" id="salvar" name="adicionarProduto" value="Adicionar Produto">
 			</div>
-
 		</div>
 	</form>
 	<form method="POST">
@@ -109,7 +109,7 @@ $produtosCompra = $produtoCompraController->findAll($_SESSION["compra_id"]);
 				<tbody>
 					<?php foreach ($produtosCompra as $key => $produtoCompra) : ?>
 						<tr>
-							<td><?php echo htmlspecialchars($produtoCompra->getProduto()->getNome()); ?></td>
+							<td><?php echo htmlspecialchars($produtoCompra->getProduto()->getId()); ?></td>
 							<td><?php echo htmlspecialchars($produtoCompra->getProduto()->getNome()); ?></td>
 							<td><?php echo number_format($produtoCompra->getQtde(), 2, ',', '.'); ?></td>
 							<td><?php echo "R\$ " . number_format($produtoCompra->getPrecoCusto(), 2, ',', '.'); ?></td>
